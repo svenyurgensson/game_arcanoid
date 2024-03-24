@@ -25,7 +25,12 @@ void Game::refresh()
         break;
     case PlayGame:
         game_loop();
-        if(JOYPAD_DOWN_PRESSED) { state = Menu; }
+        if(JOYPAD_DOWN_PRESSED) { 
+            for (int i = 0; i < 20000; i++) {
+                if (JOYPAD_DOWN_UNPRESSED) break;
+            } 
+            state = Menu; 
+        } 
         break;
     case Win:
         draw_win();
@@ -52,18 +57,23 @@ void Game::draw_menu()
 
 void Game::game_loop()
 {
-    oled.clear();
-    level_builder->draw();
+    renderer.start();
 
+    level_builder->draw();
     // Draw paddle
     paddle->move(control);
     paddle->draw();
 
-    // Draw ball and check collisions
-    ball->handle();
+    ball->draw_and_check_collisions();
+
+    uint8_t remain_bricks = level_builder->handle_collisions(ball);
+    if (remain_bricks < 1)
+    {
+        state = Win;
+    } 
 
     handle_fault();
-    oled.update();
+    renderer.render();
 }
 
 void Game::draw_win()
@@ -99,7 +109,7 @@ void Game::draw_fault()
 
 void Game::handle_fault()
 {
-    if (level_builder->is_fault() || ball->ball_state == DIE)
+    if (level_builder->is_fault() || (ball->ball_state == DIE))
     {
         state = Fault;
     }
@@ -109,6 +119,7 @@ void Game::wait_for_start()
 {
     if (control.read() && ((control.cross == 0) || (control.up == 0)))
     {
+        while((control.cross == 0) || (control.up == 0)) { control.read(); delay(1); } // ждем отжатия кнопки
         state = PlayGame;
         current_level = 0;
         level_builder = new Level(current_level);

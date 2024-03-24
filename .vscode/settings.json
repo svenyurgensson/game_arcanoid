@@ -1,4 +1,7 @@
 {
     "idf.adapterTargetName": "custom",
-    "idf.customAdapterTargetName": "pico"
+    "idf.customAdapterTargetName": "pico",
+    "files.associations": {
+        "*.tcc": "cpp"
+    }
 }

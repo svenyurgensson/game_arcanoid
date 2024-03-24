@@ -1,8 +1,6 @@
 #pragma once
 #include <SPI.h>
-#include <Wire.h>
 #include <GyverOLED.h>
-#define SPI_PORT spi0_hw
 
 // https://github.com/GyverLibs/GyverOLED
 /*
@@ -26,7 +24,9 @@ GP20 -> Display RES (Reset)
 #define DC     21 
 #define CS     22 
 
+#define SPI_PORT spi0_hw
+#define SPI_SPEED 400000ul
+
 static GyverOLED<SSH1106_128x64, OLED_BUFFER, OLED_SPI, CS, DC, RST> oled;
 
 void init_display();
-void oled_loop();

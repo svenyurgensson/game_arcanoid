@@ -125,3 +125,5 @@ public:
     }
     
 };
+
+static Joystick control;

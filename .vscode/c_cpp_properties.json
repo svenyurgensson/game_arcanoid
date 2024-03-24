@@ -10,8 +10,9 @@
             "includePath": [
                 "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/include",
                 "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/src",
+                "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/renderer",
                 "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/game",
-                "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/control",
+                "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/joystick",
                 "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/display",
                 "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/.pio/libdeps/pico/GyverOLED/src",
                 "/Users/yurybatenko/.platformio/packages/framework-arduino-mbed/libraries/Wire",
@@ -67,8 +68,9 @@
                 "path": [
                     "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/include",
                     "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/src",
+                    "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/renderer",
                     "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/game",
-                    "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/control",
+                    "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/joystick",
                     "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/lib/display",
                     "/Users/yurybatenko/projects/play/rpi2040/game_arcanoid/.pio/libdeps/pico/GyverOLED/src",
                     "/Users/yurybatenko/.platformio/packages/framework-arduino-mbed/libraries/Wire",
@@ -121,7 +123,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60113",
+                "PLATFORMIO=60114",
                 "ARDUINO_RASPBERRY_PI_PICO",
                 "ARDUINO_ARCH_RP2040",
                 "ARM_MATH_CM0PLUS",

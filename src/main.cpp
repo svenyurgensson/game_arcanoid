@@ -27,5 +27,5 @@ void loop()
   }
 
   game->refresh();
-  delay(50);
+  delay(20);
 }

@@ -9,6 +9,14 @@ void Game::init()
 {
     current_level = 0;
     state = Menu; // Menu PlayGame
+     
+    oled.clear();
+
+    for (int i = 0; i< 100; i++) {
+        oled.circle(64, 32, i, 0xff);
+        oled.update();
+        delay(1);
+    }
     refresh();
 }
 
@@ -56,7 +64,7 @@ void Game::draw_menu()
 }
 
 void Game::game_loop()
-{
+{   
     renderer.start();
 
     level_builder->draw();
@@ -95,6 +103,7 @@ void Game::draw_win()
 void Game::draw_fault()
 {
     // TODO: draw effect
+    oled.clear();
     oled.setScale(2);
     oled.setCursor(1<<3, 3);
     oled.print("YOU LOSE!!!");

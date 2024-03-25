@@ -19,6 +19,6 @@ public:
     void draw_and_check_collisions();
 private:
     Game * game;
-
+    const uint8_t speed = 2;
     void calculate_move();
 };

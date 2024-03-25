@@ -51,15 +51,32 @@ uint8_t Level::handle_collisions(Ball *ball)
         {
             continue;
         }
-        uint8_t x1 = scene[i]->pos_x - brick_margin,
-                y1 = scene[i]->pos_y - brick_margin,
-                x2 = scene[i]->pos_x + BRICKS_WIDTH - 4,
-                y2 = scene[i]->pos_y + BRICKS_HEIGHT - 2;
+        uint8_t x1 = std::max(scene[i]->pos_x - brick_margin,      0),
+                y1 = std::max(scene[i]->pos_y - brick_margin,      0),
+                x2 = std::min(scene[i]->pos_x + BRICKS_WIDTH - 4,  127),
+                y2 = std::min(scene[i]->pos_y + BRICKS_HEIGHT - 2, 63);
 
-        if (ball_x >= x1 && ball_x <= x2 && ball_y >= y1 && ball_y <= y2)
+        if (ball_x >= x1 && 
+            ball_x <= x2 && 
+            ball_y >= y1 && 
+            ball_y <= y2)
         {
-            scene[i]->brick_kind = EMP;
-            // TODO: другие типы кирпичей обработать
+            switch (scene[i]->brick_kind) 
+            {
+                case HRD:
+                    scene[i]->brick_kind = MID;
+                    remain_bricks++;
+                    break;
+                case MID:
+                    scene[i]->brick_kind = SIM;
+                    remain_bricks++;
+                    break;
+                case SIM:
+                    scene[i]->brick_kind = EMP;
+                    break; 
+                case EMP:
+                    break;                   
+            }
 
             // при отражение мяча рассчитать и изменить его координаты
             if (ball_x >= x1 || ball_x <= x2) { ball->dx *= -1; }

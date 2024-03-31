@@ -5,7 +5,7 @@ void Paddle::draw()
     renderer.draw_paddle(pos_x, pos_y);
 }
 
-const uint8_t steps[12] = {1, 1, 2, 2, 4, 4, 4, 6, 6, 8, 10, 12};
+const uint8_t steps[12] = {2, 2, 3, 3, 4, 4, 5, 6, 6, 8, 10, 12};
 static constexpr uint8_t steps_count{sizeof(steps)};
 static constexpr uint8_t max_right_x_pos = (127 - 24);
 

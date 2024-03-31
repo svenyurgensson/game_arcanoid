@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#include "pico/multicore.h"
 
 const uint8_t BRICKS_IN_ROW = 5;
 const uint8_t BRICKS_ROWS = 3;
@@ -27,7 +28,31 @@ const uint8_t LEVEL_SIZE = (LEVELS_COUNT * TOTAL_BRICKS);
 const static BricksType levels[] PROGMEM = {
     EMP, SIM, SIM, SIM, EMP, // level 0
     MID, SIM, HRD, SIM, MID,
-    EMP, SIM, SIM, SIM, EMP, // emd of level 0
+    EMP, SIM, SIM, SIM, EMP, // end of level 0
+
+    SIM, SIM, SIM, SIM, SIM, // level 1
+    EMP, MID, MID, MID, EMP,
+    EMP, HRD, EMP, HRD, EMP,
+
+    MID, HRD, HRD, HRD, MID, // level 2
+    MID, SIM, HRD, SIM, MID,
+    MID, SIM, SIM, SIM, MID,
+
+    MID, HRD, EMP, HRD, MID, // level 3
+    SIM, SIM, MID, SIM, SIM,
+    MID, HRD, EMP, HRD, MID,
+
+    HRD, MID, HRD, MID, HRD, // level 4
+    SIM, HRD, HRD, HRD, SIM,
+    MID, MID, SIM, MID, MID,
+
+    HRD, HRD, MID, HRD, HRD, // level 5
+    MID, MID, HRD, MID, MID,
+    HRD, HRD, MID, HRD, HRD,
 };
 
+constexpr uint8_t levels_count = (sizeof(levels) / LEVEL_SIZE);
+
 class Renderer;
+
+enum SOUND { NO, BR1, BR2, BR3, PAD, FALL, WIN, FAIL, TITLE };

@@ -1,31 +1,69 @@
 #include "main.h"
+#include "bitmap_arcanoid1.h"
+
+Psg psg;
+void sound_driver();
 
 // the setup routine runs once when you press reset:
 void setup()
 {
-  Serial.begin(115200);
-  delay(1000);
+    Serial.begin(115200);
+    init_display();
+    pinMode(AUDIO_OUT, OUTPUT);
+    digitalWrite(AUDIO_OUT, 0);
 
-  // initialize the digital pin as an output.
-  Serial.println(F("\nStarting\n"));
-  init_display();
-  game = new Game();
+    oled.drawBitmap(0, 0, arcanoid1, 128, 64);
+    oled.update();
+    delay(3000);
+
+    multicore_fifo_drain();
+    multicore_launch_core1(sound_driver);
+
+    Serial.println(F("\nStarting\n"));
+    game = new Game();
 }
 
 void loop()
 {
-  if (control.read())
-  {
-    Serial.print("UP="), Serial.print(control.up);
-    Serial.print("\tDOWN="), Serial.print(control.down);
-    Serial.print("\tLEFT="), Serial.print(control.left);
-    Serial.print("\tRIGHT="), Serial.print(control.right);
-    Serial.print("\tJCENTER="), Serial.print(control.cross);
-    Serial.print("\tJ-X="), Serial.print(control.x);
-    Serial.print("\tJ-Y="), Serial.println(control.y);
-    Serial.println(" ");
-  }
+    // log_joystick_state();
+    game->refresh();
+    delay(20);
+}
 
-  game->refresh();
-  delay(20);
+void sound_driver()
+{
+    while (true)
+    {
+        uint32_t _cmd = multicore_fifo_pop_blocking();
+        SOUND _sound_cmd = (SOUND)_cmd;
+
+        switch (_sound_cmd)
+        {
+        case NO:
+            break;
+        case BR1:
+            psg.ball_hit_brick1();
+            break;
+        case BR2:
+            psg.ball_hit_brick2();
+            break;
+        case BR3:
+            psg.ball_hit_brick3();
+            break;
+        case PAD:
+            psg.ball_hit_paddle();
+            break;
+        case FALL:
+        case WIN: // while !multicore_fifo_rvalid() play_music
+                  // psg.win_music();
+        case FAIL:
+            // psg.lose_music();
+            break;
+        case TITLE:
+            // psg.intro_music();
+            break;
+        default:
+            break;
+        }
+    }
 }

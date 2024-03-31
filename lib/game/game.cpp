@@ -8,15 +8,15 @@ Game::Game()
 void Game::init() 
 {
     current_level = 0;
-    state = Menu; // Menu PlayGame
-     
-    oled.clear();
+    state = Menu; // Menu PlayGame     
 
     for (int i = 0; i< 100; i++) {
-        oled.circle(64, 32, i, 0xff);
+        oled.circle(64, 32, i, 1);
         oled.update();
         delay(1);
     }
+
+    counter = 0;
     refresh();
 }
 
@@ -49,18 +49,6 @@ void Game::refresh()
     default:
         break;
     }
-}
-
-void Game::draw_menu()
-{
-    oled.clear();
-    oled.setScale(2);
-    oled.setCursor(2<<3, 1);
-    oled.print("ARCANOID");
-    oled.setCursor(5, 5);
-    oled.print("PRESS FIRE TO START");
-    oled.update();
-    oled.setScale(1);
 }
 
 void Game::game_loop()
@@ -104,11 +92,12 @@ void Game::draw_fault()
 {
     // TODO: draw effect
     oled.clear();
+    oled.drawBitmap(0, 0, fail1, 128, 64);
     oled.setScale(2);
-    oled.setCursor(1<<3, 3);
+    oled.setCursor(1, 0);
     oled.print("YOU LOSE!!!");
     oled.update();
-    delay(3000);
+    delay(6000);
     // TODO: play lose music
     state = Menu;
     //delete level_builder;
@@ -122,6 +111,24 @@ void Game::handle_fault()
     {
         state = Fault;
     }
+}
+
+const int max_counter = 20;
+
+void Game::draw_menu()
+{
+    oled.clear();
+    oled.drawBitmap(0, 0, arcanoid2, 128, 64);
+    oled.setScale(1);
+    if (counter > max_counter) {
+        oled.textMode(BUF_ADD);
+        oled.setCursor(5, 7);
+        oled.print("PRESS FIRE TO START");
+        if (counter > (2 * max_counter))
+            counter = 0;
+    }     
+    counter++;
+    oled.update();
 }
 
 void Game::wait_for_start()

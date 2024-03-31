@@ -6,6 +6,10 @@
 #include "level.h"
 #include "ball.h"
 #include "paddle.h"
+#include "psg.h"
+
+#include "bitmap_arcanoid2.h"
+#include "bitmap_fail.h"
 
 class Level;
 class Ball;
@@ -30,4 +34,6 @@ public:
     void draw_fault();
     void handle_fault();
     void wait_for_start();
+private:
+    int counter;
 };

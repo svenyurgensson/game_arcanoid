@@ -1,9 +1,6 @@
 #pragma once
 #include <Arduino.h>
 
-// sound out
-#define AUDIO_OUT 10
-
 // Furduino Joystick
 #define PIN_START_BUTTON 11
 #define PIN_RIGHT_BUTTON 12
@@ -123,7 +120,21 @@ public:
 
         return changed;
     }
-    
 };
 
 static Joystick control;
+
+static void log_joystick_state()
+{
+    if (control.read())
+    {
+        Serial.print("UP="), Serial.print(control.up);
+        Serial.print("\tDOWN="), Serial.print(control.down);
+        Serial.print("\tLEFT="), Serial.print(control.left);
+        Serial.print("\tRIGHT="), Serial.print(control.right);
+        Serial.print("\tJCENTER="), Serial.print(control.cross);
+        Serial.print("\tJ-X="), Serial.print(control.x);
+        Serial.print("\tJ-Y="), Serial.println(control.y);
+        Serial.println(" ");
+    }
+}

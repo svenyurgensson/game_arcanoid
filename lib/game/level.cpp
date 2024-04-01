@@ -1,8 +1,8 @@
 #include "level.h"
 
-Level::Level(uint8_t level)
+Level::Level(uint8_t lvl)
 {
-    level = level;
+    level = lvl;
     init_scene();
 }
 
@@ -66,16 +66,16 @@ uint8_t Level::handle_collisions(Ball *ball)
                 case HRD:
                     scene[i]->brick_kind = MID;
                     remain_bricks++;
-                    multicore_fifo_push_blocking(BR3);
+                    audio_command_play(BR3);
                     break;
                 case MID:
                     scene[i]->brick_kind = SIM;
                     remain_bricks++;
-                    multicore_fifo_push_blocking(BR2);
+                    audio_command_play(BR2);
                     break;
                 case SIM:
                     scene[i]->brick_kind = EMP;
-                    multicore_fifo_push_blocking(BR1);
+                    audio_command_play(BR1);
                     break; 
                 case EMP:
                     break;                   

@@ -12,7 +12,7 @@ public:
     uint8_t level = 0;
     Brick * scene[BRICKS_IN_ROW * BRICKS_ROWS];
 
-    Level(uint8_t level);
+    explicit Level(uint8_t lvl);
     ~Level();
 
     void init_scene();

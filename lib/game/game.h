@@ -10,6 +10,7 @@
 
 #include "bitmap_arcanoid2.h"
 #include "bitmap_fail.h"
+#include "bitmap_win.h"
 
 class Level;
 class Ball;
@@ -36,4 +37,5 @@ public:
     void wait_for_start();
 private:
     int counter;
+    void wait_until_start_pressed();
 };

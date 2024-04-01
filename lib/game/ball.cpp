@@ -45,9 +45,8 @@ void Ball::calculate_move()
         {
             dy = -dy;
             float diff = pad_pos_x + PADDLE_WIDTH - pos_x - PADDLE_WIDTH / 2;
-            dx -= diff * 0.3 + (3 - random(0, 6) / 30.0); // немного добавим случайности
-            // TODO: beep sound            
-            multicore_fifo_push_blocking(PAD);
+            dx -= diff * 0.3 + (3 - random(0, 6) / 30.0); // немного добавим случайности          
+            audio_command_play(PAD);
         }
         if (pos_y < (pad_pos_y - 5))
         {

@@ -74,18 +74,18 @@ void Game::game_loop()
 
 void Game::draw_win()
 {
-    // TODO: draw effect
     current_level += 1;
-    // TODO: set next level or rotate to first
+    if (current_level >= levels_count) current_level = 0; // Если прошли последний уровень возвращаемся к 0 
     oled.clear();
-    oled.setScale(2);
+    oled.drawBitmap(0, 0, bitmap_win, 128, 64);
+    oled.setScale(1);
     oled.setCursor(2<<3, 1);
     oled.print("YOU WIN!!!");
-    delay(1000);
     oled.update();
-    // TODO: play win music
-    delay(2000);
-    state = Menu;
+    audio_command_play(WIN);    
+    delay(1000);
+    wait_for_start();
+    state = PlayGame;
 }
 
 void Game::draw_fault()
@@ -96,6 +96,7 @@ void Game::draw_fault()
     oled.setScale(2);
     oled.setCursor(1, 0);
     oled.print("YOU LOSE!!!");
+    audio_command_play(FAIL);
     oled.update();
     delay(6000);
     // TODO: play lose music
@@ -133,14 +134,23 @@ void Game::draw_menu()
 
 void Game::wait_for_start()
 {
+    wait_until_start_pressed();
     if (control.read() && ((control.cross == 0) || (control.up == 0)))
     {
-        while((control.cross == 0) || (control.up == 0)) { control.read(); delay(1); } // ждем отжатия кнопки
+        wait_until_start_pressed();
         state = PlayGame;
         current_level = 0;
+        // Первоначальные положения биты, мяча и кирпичей
         level_builder = new Level(current_level);
         paddle = new Paddle(((128-12) / 2), 56);
         ball = new Ball(((128-12) / 2) + 8, 50, this);
         // TODO: play start music
+        audio_command_play(START);
     }
+}
+
+// ждем отжатия кнопки старт
+void Game::wait_until_start_pressed()
+{
+    while((control.cross == 0) || (control.up == 0)) { control.read(); delay(1); } 
 }

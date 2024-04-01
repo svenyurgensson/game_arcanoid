@@ -28,8 +28,8 @@
 class Joystick
 {
 public:
-    uint8_t up, down, left, right, cross;
-    uint16_t x, y;
+    uint8_t up = 1, down = 1, left = 1, right = 1, cross = 1;
+    uint16_t x = 512, y = 512;
 
     const uint16_t epsilon = 16;
 

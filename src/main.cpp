@@ -5,6 +5,7 @@ Psg psg;
 void sound_driver();
 
 // the setup routine runs once when you press reset:
+// cppcheck-suppress unusedFunction
 void setup()
 {
     Serial.begin(115200);
@@ -23,6 +24,7 @@ void setup()
     game = new Game();
 }
 
+//cppcheck-suppress unusedFunction
 void loop()
 {
     // log_joystick_state();
@@ -53,9 +55,10 @@ void sound_driver()
         case PAD:
             psg.ball_hit_paddle();
             break;
-        case FALL:
+        case START:
         case WIN: // while !multicore_fifo_rvalid() play_music
-                  // psg.win_music();
+            // psg.win_music();
+            break;
         case FAIL:
             // psg.lose_music();
             break;

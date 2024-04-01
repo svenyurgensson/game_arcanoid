@@ -55,4 +55,6 @@ constexpr uint8_t levels_count = (sizeof(levels) / LEVEL_SIZE);
 
 class Renderer;
 
-enum SOUND { NO, BR1, BR2, BR3, PAD, FALL, WIN, FAIL, TITLE };
+enum SOUND { NO, BR1, BR2, BR3, PAD, START, WIN, FAIL, TITLE };
+
+#define audio_command_play multicore_fifo_push_blocking

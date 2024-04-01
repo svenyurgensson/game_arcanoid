@@ -16,7 +16,7 @@ void Game::init()
         delay(1);
     }
 
-    counter = 0;
+    blink_counter = 0;
     refresh();
 }
 
@@ -68,7 +68,7 @@ void Game::game_loop()
         state = Win;
     } 
 
-    handle_fault();
+    check_fault();
     renderer.render();
 }
 
@@ -95,18 +95,18 @@ void Game::draw_fault()
     oled.drawBitmap(0, 0, fail1, 128, 64);
     oled.setScale(2);
     oled.setCursor(1, 0);
-    oled.print("YOU LOSE!!!");
-    audio_command_play(FAIL);
+    oled.print("YOU LOSE!!!");    
     oled.update();
+    audio_command_play(FAIL);
+
     delay(6000);
-    // TODO: play lose music
     state = Menu;
     //delete level_builder;
     //delete paddle;
     //delete ball;
 }
 
-void Game::handle_fault()
+void Game::check_fault()
 {
     if (level_builder->is_fault() || (ball->ball_state == DIE))
     {
@@ -121,14 +121,14 @@ void Game::draw_menu()
     oled.clear();
     oled.drawBitmap(0, 0, arcanoid2, 128, 64);
     oled.setScale(1);
-    if (counter > max_counter) {
+    if (blink_counter > max_counter) {
         oled.textMode(BUF_ADD);
         oled.setCursor(5, 7);
         oled.print("PRESS FIRE TO START");
-        if (counter > (2 * max_counter))
-            counter = 0;
+        if (blink_counter > (2 * max_counter))
+            blink_counter = 0;
     }     
-    counter++;
+    blink_counter++;
     oled.update();
 }
 

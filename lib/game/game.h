@@ -33,9 +33,9 @@ public:
     void game_loop();
     void draw_win();
     void draw_fault();
-    void handle_fault();
+    void check_fault();
     void wait_for_start();
 private:
-    int counter;
+    int blink_counter;
     void wait_until_start_pressed();
 };

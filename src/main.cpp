@@ -1,5 +1,6 @@
 #include "main.h"
 #include "bitmap_arcanoid1.h"
+#include "pico/binary_info.h"
 
 Psg psg;
 void sound_driver();
@@ -8,17 +9,20 @@ void sound_driver();
 // cppcheck-suppress unusedFunction
 void setup()
 {
+    bi_decl(bi_program_description("Arkanoid Game"));
+
     Serial.begin(115200);
     init_display();
     pinMode(AUDIO_OUT, OUTPUT);
     digitalWrite(AUDIO_OUT, 0);
 
-    oled.drawBitmap(0, 0, arcanoid1, 128, 64);
-    oled.update();
-    delay(3000);
-
     multicore_fifo_drain();
-    multicore_launch_core1(sound_driver);
+    //multicore_launch_core1(sound_driver);
+    delay(1);
+    oled.drawBitmap(0, 0, arcanoid1, 128, 64);
+    oled.update();    
+    audio_command_play(START);
+    delay(3000);
 
     Serial.println(F("\nStarting\n"));
     game = new Game();
@@ -55,15 +59,20 @@ void sound_driver()
         case PAD:
             psg.ball_hit_paddle();
             break;
-        case START:
         case WIN: // while !multicore_fifo_rvalid() play_music
             // psg.win_music();
             break;
         case FAIL:
             // psg.lose_music();
             break;
-        case TITLE:
-            // psg.intro_music();
+        case START:            
+        case TITLE:      
+            /* psg.title_music_init();
+            while (!multicore_fifo_rvalid())
+            {
+                sleep_ms(20);
+                psg.next_music_tick();
+            } */
             break;
         default:
             break;

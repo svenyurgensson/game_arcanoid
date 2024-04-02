@@ -35,22 +35,24 @@ void Psg::ball_hit_brick3()
      tone(NOTE_C1, 12, 0);
 }
 
-void Psg::intro_music()
+void Psg::title_music_init()
 {
-     // Tell GPIO PWM
-     gpio_set_function(AUDIO_OUT, GPIO_FUNC_PWM);
+     init_mod_player(0); 
 }
 
 void Psg::win_music()
 {
-     // Tell GPIO PWM
-     gpio_set_function(AUDIO_OUT, GPIO_FUNC_PWM);
-
+     init_mod_player(1);
 }
 
 void Psg::lose_music()
 {
+     init_mod_player(2);
+}
 
+void Psg::next_music_tick()
+{
+     update_mod_player();
 }
 
 void Psg::tone(unsigned int frequency_hz, unsigned long duration_ms, unsigned long post_play_delay_ms)

@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#include "mod_player/player.h"
 
 // sound out
 #define AUDIO_OUT 16
@@ -18,9 +19,10 @@ public:
     void ball_hit_brick2();
     void ball_hit_brick3();
 
-    void intro_music();
+    void title_music_init();
     void win_music();
     void lose_music();
+    void next_music_tick();
     
 
 private:

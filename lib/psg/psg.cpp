@@ -1,18 +1,10 @@
 #include "psg.h"
-#include "player.c"
+#include "hardware/pwm.h"
 #include "notes.h"
 
 void Psg::init()
 {
      digitalWrite(AUDIO_OUT, 0);
-
-     // Tell GPIO PWM
-     gpio_set_function(AUDIO_OUT, GPIO_FUNC_PWM);
-
-     // Find out which PWM slice is connected to GPIO 0 (it's slice 0)
-     uint slice_num = pwm_gpio_to_slice_num(AUDIO_OUT);
-
-     noteTimer.slice_num = slice_num;
 }
 
 void Psg::ball_hit_paddle()
@@ -47,11 +39,6 @@ void Psg::intro_music()
 {
      // Tell GPIO PWM
      gpio_set_function(AUDIO_OUT, GPIO_FUNC_PWM);
-
-     play_melody(&noteTimer, HarryPotter, 144);
-
-     // wait until is done
-     while(!noteTimer.Done);
 }
 
 void Psg::win_music()
@@ -59,10 +46,6 @@ void Psg::win_music()
      // Tell GPIO PWM
      gpio_set_function(AUDIO_OUT, GPIO_FUNC_PWM);
 
-     play_melody(&noteTimer, HappyBirday, 140);
-     
-     // wait until is done
-     while(!noteTimer.Done);
 }
 
 void Psg::lose_music()

@@ -64,7 +64,7 @@ public:
     void draw_ball(uint8_t x, uint8_t y);
     void draw_bricks(uint8_t x, uint8_t y, uint8_t kind);
     void start(); 
-    void render();            
+    void render(uint8_t level);            
 };
 
 

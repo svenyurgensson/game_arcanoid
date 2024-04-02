@@ -47,7 +47,11 @@ void Renderer::start()
     oled.clear();
 }
 
-void Renderer::render()
+void Renderer::render(uint8_t level)
 {
+    // Печатаем текущий уровень в левом верхнем углу
+    oled.setCursor(0, 0);
+    oled.print(level);
+
     oled.update();
 }

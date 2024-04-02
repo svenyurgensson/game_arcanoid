@@ -69,7 +69,7 @@ void Game::game_loop()
     } 
 
     check_fault();
-    renderer.render();
+    renderer.render(current_level);
 }
 
 void Game::draw_win()

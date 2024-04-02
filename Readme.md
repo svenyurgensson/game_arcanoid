@@ -2,6 +2,14 @@
 
 ## Инсталляция
 
+## Электронные компоненты
+
+## Схема устройства
+
+![Схематехника](resources/images/schema.png)
+
+![Цоколёвка транзистора КТ3102БМ](resources/images/kt3102bm.jpeg)
+
 ## Документация
 
 * Документация по Raspberry Pi Pico фреймворку Ардуино для Platformio https://arduino-pico.readthedocs.io/en/latest

@@ -6,7 +6,7 @@
 
 ## Схема устройства
 
-![Схематехника](resources/images/schema.png)
+![Схемотехника](resources/images/schema.png)
 
 ![Цоколёвка транзистора КТ3102БМ](resources/images/kt3102bm.jpeg)
 
@@ -29,6 +29,9 @@ https://notisrac.github.io/FileToCArray/
 Использование:
 
     mod2h input_music.mod output_file.h
+
+
+Редактор пиксельной графики https://www.piskelapp.com/
 
 ## Структура программы
 

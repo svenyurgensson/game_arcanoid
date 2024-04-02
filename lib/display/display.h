@@ -1,5 +1,4 @@
 #pragma once
-#include <SPI.h>
 #include <GyverOLED.h>
 
 // https://github.com/GyverLibs/GyverOLED

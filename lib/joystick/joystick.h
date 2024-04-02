@@ -1,5 +1,4 @@
 #pragma once
-#include <Arduino.h>
 
 // Furduino Joystick
 #define PIN_START_BUTTON 11

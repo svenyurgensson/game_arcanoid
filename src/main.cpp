@@ -11,22 +11,31 @@ void setup()
     bi_decl(bi_program_description("Arkanoid Game"));
 
     Serial.begin(115200);
+    Serial.println(F("\nStarting\n"));
+    
+    // Инициализируем дисплей
     init_display();
+    
+    // Устаравливаем режим пина подключенного к выводу звука
     pinMode(AUDIO_OUT, OUTPUT);
     digitalWrite(AUDIO_OUT, 0);
 
+    // Очищаем  FIFO буффер обмена между ядрами процессора
     multicore_fifo_drain();
+    // Стартуем драйвер звука на втором ядре процессора
     multicore_launch_core1(sound_driver);
     delay(1);
+
+    // Рисуем заставку, стартуем интро музыку и небольшая задержка перед переходом в игру
     oled.drawBitmap(0, 0, arcanoid1, 128, 64);
     oled.update();    
     audio_command_play(START);
     delay(3000);
 
-    Serial.println(F("\nStarting\n"));
     game = new Game();
 }
 
+// Основной цикл игры, обновляемся каждые 20мс
 //cppcheck-suppress unusedFunction
 void loop()
 {
@@ -35,6 +44,8 @@ void loop()
     delay(20);
 }
 
+// Звуковой драйвер, работает в бесконечном цикле, запускается на втором ядре процессора
+// Ожидает команды от первого ядра процессора при помощи чтения из своего входного FIFO буфера
 void sound_driver()
 {
     while (true)
@@ -58,7 +69,7 @@ void sound_driver()
         case PAD:
             psg.ball_hit_paddle();
             break;
-        case WIN: // while !multicore_fifo_rvalid() play_music
+        case WIN: 
             psg.win_music_init();
             blocked_music_tick();
             break;
@@ -82,7 +93,7 @@ void blocked_music_tick(void)
     // играем музыку, пока процессору не пришла другая команда в CPU FIFO
     while (!multicore_fifo_rvalid())
     {
-        sleep_ms(20);
         psg.next_music_tick();
+        sleep_ms(20);
     }  
 }

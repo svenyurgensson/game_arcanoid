@@ -29,13 +29,13 @@ public:
     Game();
     void init();
     void refresh();
-    void draw_menu();
+    void draw_press_fire();
     void game_loop();
     void draw_win();
     void draw_fault();
     void check_fault();
     void wait_for_start();
 private:
-    int blink_counter;
+    int blink_counter = 0;
     void wait_until_start_pressed();
 };

@@ -8,7 +8,7 @@ Game::Game()
 void Game::init() 
 {
     current_level = 0;
-    state = Menu; // Menu PlayGame     
+    state = PlayGame; // Menu PlayGame     
 
     for (int i = 0; i< 100; i++) {
         oled.circle(64, 32, i, 1);
@@ -28,7 +28,7 @@ void Game::refresh()
     switch (state)
     {
     case Menu:
-        draw_menu();
+        draw_press_fire();
         wait_for_start();        
         break;
     case PlayGame:
@@ -56,17 +56,14 @@ void Game::game_loop()
     renderer.start();
 
     level_builder->draw();
-    // Draw paddle
+
     paddle->move(control);
     paddle->draw();
 
     ball->draw_and_check_collisions();
 
     uint8_t remain_bricks = level_builder->handle_collisions(ball);
-    if (remain_bricks < 1)
-    {
-        state = Win;
-    } 
+    if (remain_bricks < 1) state = Win;
 
     check_fault();
     renderer.render(current_level);
@@ -90,7 +87,6 @@ void Game::draw_win()
 
 void Game::draw_fault()
 {
-    // TODO: draw effect
     oled.clear();
     oled.drawBitmap(0, 0, fail1, 128, 64);
     oled.setScale(2);
@@ -116,7 +112,7 @@ void Game::check_fault()
 
 const int max_counter = 20;
 
-void Game::draw_menu()
+void Game::draw_press_fire()
 {
     oled.clear();
     oled.drawBitmap(0, 0, arcanoid2, 128, 64);
@@ -127,25 +123,22 @@ void Game::draw_menu()
         oled.print("PRESS FIRE TO START");
         if (blink_counter > (2 * max_counter))
             blink_counter = 0;
-    }     
+    }  
     blink_counter++;
     oled.update();
 }
 
 void Game::wait_for_start()
 {
-    wait_until_start_pressed();
+    delay(100);
     if (control.read() && ((control.cross == 0) || (control.up == 0)))
     {
-        wait_until_start_pressed();
         state = PlayGame;
         current_level = 0;
         // Первоначальные положения биты, мяча и кирпичей
         level_builder = new Level(current_level);
         paddle = new Paddle(((128-12) / 2), 56);
-        ball = new Ball(((128-12) / 2) + 8, 50, this);
-        // TODO: play start music
-        audio_command_play(START);
+        ball = new Ball(((128-12) / 2) + 8, 50, this);        
     }
 }
 

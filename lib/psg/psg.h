@@ -20,8 +20,8 @@ public:
     void ball_hit_brick3();
 
     void title_music_init();
-    void win_music();
-    void lose_music();
+    void win_music_init();
+    void fail_music_init();
     void next_music_tick();
     
 

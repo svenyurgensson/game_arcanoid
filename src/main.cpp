@@ -3,7 +3,6 @@
 #include "pico/binary_info.h"
 
 Psg psg;
-void sound_driver();
 
 // the setup routine runs once when you press reset:
 // cppcheck-suppress unusedFunction
@@ -17,7 +16,7 @@ void setup()
     digitalWrite(AUDIO_OUT, 0);
 
     multicore_fifo_drain();
-    //multicore_launch_core1(sound_driver);
+    multicore_launch_core1(sound_driver);
     delay(1);
     oled.drawBitmap(0, 0, arcanoid1, 128, 64);
     oled.update();    
@@ -60,22 +59,30 @@ void sound_driver()
             psg.ball_hit_paddle();
             break;
         case WIN: // while !multicore_fifo_rvalid() play_music
-            // psg.win_music();
+            psg.win_music_init();
+            blocked_music_tick();
             break;
         case FAIL:
-            // psg.lose_music();
+            psg.fail_music_init();
+            blocked_music_tick();
             break;
         case START:            
-        case TITLE:      
-            /* psg.title_music_init();
-            while (!multicore_fifo_rvalid())
-            {
-                sleep_ms(20);
-                psg.next_music_tick();
-            } */
+        case TITLE:   
+            psg.title_music_init();               
+            blocked_music_tick();
             break;
         default:
             break;
         }
     }
+}
+
+void blocked_music_tick(void)
+{
+    // играем музыку, пока процессору не пришла другая команда в CPU FIFO
+    while (!multicore_fifo_rvalid())
+    {
+        sleep_ms(20);
+        psg.next_music_tick();
+    }  
 }

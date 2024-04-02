@@ -40,12 +40,12 @@ void Psg::title_music_init()
      init_mod_player(0); 
 }
 
-void Psg::win_music()
+void Psg::win_music_init()
 {
      init_mod_player(1);
 }
 
-void Psg::lose_music()
+void Psg::fail_music_init()
 {
      init_mod_player(2);
 }

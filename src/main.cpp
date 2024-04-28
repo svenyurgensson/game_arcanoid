@@ -15,10 +15,6 @@ void setup()
     
     // Инициализируем дисплей
     init_display();
-    
-    // Устаравливаем режим пина подключенного к выводу звука
-    pinMode(AUDIO_OUT, OUTPUT);
-    digitalWrite(AUDIO_OUT, 0);
 
     // Очищаем  FIFO буффер обмена между ядрами процессора
     multicore_fifo_drain();
@@ -39,7 +35,7 @@ void setup()
 //cppcheck-suppress unusedFunction
 void loop()
 {
-    // log_joystick_state();
+    log_joystick_state();
     game->refresh();
     delay(20);
 }
@@ -71,16 +67,16 @@ void sound_driver()
             break;
         case WIN: 
             psg.win_music_init();
-            blocked_music_tick();
+            play_music_until_break();
             break;
         case FAIL:
-            psg.fail_music_init();
-            blocked_music_tick();
+            //psg.fail_music_init();
+            //play_music_until_break();
             break;
         case START:            
         case TITLE:   
-            psg.title_music_init();               
-            blocked_music_tick();
+            //psg.title_music_init();               
+            //play_music_until_break();
             break;
         default:
             break;
@@ -88,12 +84,13 @@ void sound_driver()
     }
 }
 
-void blocked_music_tick(void)
-{
-    // играем музыку, пока процессору не пришла другая команда в CPU FIFO
+// играем музыку, пока процессору не пришла другая команда в FIFO второго ядра
+void play_music_until_break(void)
+{    
     while (!multicore_fifo_rvalid())
     {
         psg.next_music_tick();
         sleep_ms(20);
-    }  
+    } 
+    psg.stop_music();
 }

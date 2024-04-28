@@ -4,6 +4,8 @@
 
 // sound out
 #define AUDIO_OUT 16
+#define BEEP_OUT 16
+//#define BEEP_OUT 17
 
 class Psg 
 {
@@ -23,7 +25,7 @@ public:
     void win_music_init();
     void fail_music_init();
     void next_music_tick();
-    
+    void stop_music();
 
 private:
     void tone(unsigned int frequency_hz, unsigned long duration_ms, unsigned long post_play_delay_ms);

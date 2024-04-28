@@ -7,11 +7,10 @@ Game::Game()
 
 void Game::init() 
 {
-    current_level = 0;
-    state = PlayGame; // Menu PlayGame     
+    state = Menu; // Menu PlayGame     
 
     for (int i = 0; i< 100; i++) {
-        oled.circle(64, 32, i, 1);
+        oled.circle(64, 32, i, 0xff);
         oled.update();
         delay(1);
     }
@@ -28,17 +27,13 @@ void Game::refresh()
     switch (state)
     {
     case Menu:
+        current_level = 0;    
         draw_press_fire();
-        wait_for_start();        
+        check_for_start_pressed();        
         break;
     case PlayGame:
-        game_loop();
-        if(JOYPAD_DOWN_PRESSED) { 
-            for (int i = 0; i < 20000; i++) {
-                if (JOYPAD_DOWN_UNPRESSED) break;
-            } 
-            state = Menu; 
-        } 
+        game_loop();        
+        if(JOY_BOTH_LEFT_RIGHT_PRESSED) state = Menu; 
         break;
     case Win:
         draw_win();
@@ -81,7 +76,7 @@ void Game::draw_win()
     oled.update();
     audio_command_play(WIN);    
     delay(1000);
-    wait_for_start();
+    check_for_start_pressed();
     state = PlayGame;
 }
 
@@ -90,8 +85,8 @@ void Game::draw_fault()
     oled.clear();
     oled.drawBitmap(0, 0, fail1, 128, 64);
     oled.setScale(2);
-    oled.setCursor(1, 0);
-    oled.print("YOU LOSE!!!");    
+    oled.setCursor(0, 0);
+    oled.print("++ FAIL ++");    
     oled.update();
     audio_command_play(FAIL);
 
@@ -128,13 +123,11 @@ void Game::draw_press_fire()
     oled.update();
 }
 
-void Game::wait_for_start()
+void Game::check_for_start_pressed()
 {
-    delay(100);
-    if (control.read() && ((control.cross == 0) || (control.up == 0)))
+    if (is_start_pressed())
     {
-        state = PlayGame;
-        current_level = 0;
+        state = PlayGame;        
         // Первоначальные положения биты, мяча и кирпичей
         level_builder = new Level(current_level);
         paddle = new Paddle(((128-12) / 2), 56);
@@ -142,8 +135,13 @@ void Game::wait_for_start()
     }
 }
 
+bool Game::is_start_pressed()
+{
+    return (control.read() && (control.up == 0));
+}
+
 // ждем отжатия кнопки старт
 void Game::wait_until_start_pressed()
 {
-    while((control.cross == 0) || (control.up == 0)) { control.read(); delay(1); } 
+    while(is_start_pressed()) { delay(1); } 
 }

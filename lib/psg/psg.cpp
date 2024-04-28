@@ -4,40 +4,44 @@
 
 void Psg::init()
 {
+     // Устаравливаем режим пина подключенного к выводу звука
+     pinMode(AUDIO_OUT, OUTPUT_12MA);
+     pinMode(BEEP_OUT, OUTPUT_12MA);
      digitalWrite(AUDIO_OUT, 0);
+     digitalWrite(BEEP_OUT, 0);
 }
 
 void Psg::ball_hit_paddle()
 {
-     pinMode(AUDIO_OUT, OUTPUT);
+     pinMode(BEEP_OUT, OUTPUT_12MA);
 
      tone(NOTE_D1, 12, 0);
 }
 
 void Psg::ball_hit_brick1()
 {
-     pinMode(AUDIO_OUT, OUTPUT);
+     pinMode(BEEP_OUT, OUTPUT_12MA);
 
      tone(NOTE_C5, 12, 0);
 }
 
 void Psg::ball_hit_brick2()
 {
-     pinMode(AUDIO_OUT, OUTPUT);
+     pinMode(BEEP_OUT, OUTPUT_12MA);
 
      tone(NOTE_C3, 12, 0);
 }
 
 void Psg::ball_hit_brick3()
 {
-     pinMode(AUDIO_OUT, OUTPUT);
+     pinMode(BEEP_OUT, OUTPUT_12MA);
 
      tone(NOTE_C1, 12, 0);
 }
 
 void Psg::title_music_init()
 {
-     init_mod_player(0); 
+     init_mod_player(0);
 }
 
 void Psg::win_music_init()
@@ -55,6 +59,11 @@ void Psg::next_music_tick()
      update_mod_player();
 }
 
+void Psg::stop_music()
+{
+     // update_mod_player();
+}
+
 void Psg::tone(unsigned int frequency_hz, unsigned long duration_ms, unsigned long post_play_delay_ms)
 {
      // Play the required tone on the pizeo speaker pin
@@ -69,9 +78,9 @@ void Psg::tone(unsigned int frequency_hz, unsigned long duration_ms, unsigned lo
      // Loop until duration (milliseconds) in microseconds has elapsed
      while (time_us_64() < start + duration_ms * 1000)
      {
-          digitalWrite(AUDIO_OUT, 1);
+          digitalWrite(BEEP_OUT, 1);
           sleep_us(0.5 * period);
-          digitalWrite(AUDIO_OUT, 0);
+          digitalWrite(BEEP_OUT, 0);
           sleep_us(0.5 * period);
      };
 

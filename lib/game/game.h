@@ -34,7 +34,8 @@ public:
     void draw_win();
     void draw_fault();
     void check_fault();
-    void wait_for_start();
+    bool is_start_pressed();
+    void check_for_start_pressed();
 private:
     int blink_counter = 0;
     void wait_until_start_pressed();
